@@ -1,0 +1,22 @@
+version: '3.4'
+
+services:
+  db: 
+    image: "mcr.microsoft.com/mssql/server:2017-latest"
+    container_name: sql-server
+    environment:
+        - ACCEPT_EULA=Y
+        - SA_PASSWORD=TestingLabExp1!
+    ports:
+      - 1433:1433
+  labtests:
+    image: ${DOCKER_REGISTRY-}labtests
+    container_name: web-api
+    build:
+      context: .
+      dockerfile: LabTests/Dockerfile
+    ports:
+      - 5000:443
+    depends_on:
+        - db
+
